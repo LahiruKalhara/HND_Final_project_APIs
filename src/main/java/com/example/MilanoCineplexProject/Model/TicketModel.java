@@ -1,16 +1,16 @@
 package com.example.MilanoCineplexProject.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name ="Tickets")
+@Table(name = "Tickets")
 public class TicketModel {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
     private int TicketID;
+
     private String TicketMovie;
     private String TicketType;
     private double TicketPrice;
@@ -19,11 +19,28 @@ public class TicketModel {
     private String TicketEmail;
     private int TicketCount;
 
+    private String SeatNumbers;
+    private LocalDateTime BookingDateTime;
+    private boolean PaymentStatus;
+    private String QRCode;
+
+
 
     public TicketModel() {
     }
 
-    public TicketModel(int ticketID, String ticketMovie, String ticketType, double ticketPrice, String ticketTime, String ticketName, String ticketEmail, int ticketCount) {
+    @ManyToOne
+    @JoinColumn(name = "MovieID")
+    private MovieModel movie;
+
+    @ManyToOne
+    @JoinColumn(name = "UserID")
+    private UserModel user;
+
+
+    public TicketModel(int ticketID, String ticketMovie, String ticketType, double ticketPrice, String ticketTime,
+                       String ticketName, String ticketEmail, int ticketCount, String seatNumbers,
+                       LocalDateTime bookingDateTime, boolean paymentStatus, String qrCode) {
         TicketID = ticketID;
         TicketMovie = ticketMovie;
         TicketType = ticketType;
@@ -32,6 +49,10 @@ public class TicketModel {
         TicketName = ticketName;
         TicketEmail = ticketEmail;
         TicketCount = ticketCount;
+        SeatNumbers = seatNumbers;
+        BookingDateTime = bookingDateTime;
+        PaymentStatus = paymentStatus;
+        QRCode = qrCode;
     }
 
     public int getTicketID() {
@@ -96,5 +117,37 @@ public class TicketModel {
 
     public void setTicketCount(int ticketCount) {
         TicketCount = ticketCount;
+    }
+
+    public String getSeatNumbers() {
+        return SeatNumbers;
+    }
+
+    public void setSeatNumbers(String seatNumbers) {
+        SeatNumbers = seatNumbers;
+    }
+
+    public LocalDateTime getBookingDateTime() {
+        return BookingDateTime;
+    }
+
+    public void setBookingDateTime(LocalDateTime bookingDateTime) {
+        BookingDateTime = bookingDateTime;
+    }
+
+    public boolean isPaymentStatus() {
+        return PaymentStatus;
+    }
+
+    public void setPaymentStatus(boolean paymentStatus) {
+        PaymentStatus = paymentStatus;
+    }
+
+    public String getQRCode() {
+        return QRCode;
+    }
+
+    public void setQRCode(String qrCode) {
+        QRCode = qrCode;
     }
 }

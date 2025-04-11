@@ -1,28 +1,44 @@
 package com.example.MilanoCineplexProject.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import javax.naming.Name;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Reviews")
 public class ReviewModel {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ReviewID;
+
     private String ReviewUsername;
     private String ReviewDescription;
 
+    private int ReviewRating;
+
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime ReviewTimestamp;
+
     public ReviewModel() {
+        this.ReviewTimestamp = LocalDateTime.now();
     }
 
-    public ReviewModel(int reviewID, String reviewUsername, String reviewDescription) {
-        ReviewID = reviewID;
-        ReviewUsername = reviewUsername;
-        ReviewUsername = reviewDescription;
+    @ManyToOne
+    @JoinColumn(name = "MovieID")
+    private MovieModel movie;
+
+    @ManyToOne
+    @JoinColumn(name = "UserID")
+    private UserModel user;
+
+    public ReviewModel(int reviewID, String reviewUsername, String reviewDescription, int reviewRating) {
+        this.ReviewID = reviewID;
+        this.ReviewUsername = reviewUsername;
+        this.ReviewDescription = reviewDescription;
+        this.ReviewRating = reviewRating;
+        this.ReviewTimestamp = LocalDateTime.now();
     }
 
     public int getReviewID() {
@@ -47,5 +63,21 @@ public class ReviewModel {
 
     public void setReviewDescription(String reviewDescription) {
         ReviewDescription = reviewDescription;
+    }
+
+    public int getReviewRating() {
+        return ReviewRating;
+    }
+
+    public void setReviewRating(int reviewRating) {
+        ReviewRating = reviewRating;
+    }
+
+    public LocalDateTime getReviewTimestamp() {
+        return ReviewTimestamp;
+    }
+
+    public void setReviewTimestamp(LocalDateTime reviewTimestamp) {
+        ReviewTimestamp = reviewTimestamp;
     }
 }

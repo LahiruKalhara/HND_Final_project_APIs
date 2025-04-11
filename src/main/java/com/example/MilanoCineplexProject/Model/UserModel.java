@@ -1,35 +1,45 @@
 package com.example.MilanoCineplexProject.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import javax.naming.Name;
+import java.util.List;
 
 @Entity
-@Table(name ="Users")
+@Table(name = "Users")
 public class UserModel {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int UserID;
+
     private String UserName;
+    private String UserEmail;
     private String UserTelephone;
     private String UserAddress;
-    private String UserPassword;
-    private String UserConfirmPassword;
 
+    @Column(nullable = false)
+    private String UserPassword;
+
+    private String UserRole;
 
     public UserModel() {
     }
 
-    public UserModel(String userConfirmPassword, String userPassword, String userAddress, String userTelephone, String userName, int userID) {
-        UserConfirmPassword = userConfirmPassword;
-        UserPassword = userPassword;
-        UserAddress = userAddress;
-        UserTelephone = userTelephone;
-        UserName = userName;
+    @OneToMany(mappedBy = "user")
+    private List<ReviewModel> reviews;
+
+    @OneToMany(mappedBy = "user")
+    private List<TicketModel> tickets;
+
+    public UserModel(int userID, String userName, String userEmail, String userTelephone,
+                     String userAddress, String userPassword, String userRole) {
         UserID = userID;
+        UserName = userName;
+        UserEmail = userEmail;
+        UserTelephone = userTelephone;
+        UserAddress = userAddress;
+        UserPassword = userPassword;
+        UserRole = userRole;
     }
 
     public int getUserID() {
@@ -46,6 +56,14 @@ public class UserModel {
 
     public void setUserName(String userName) {
         UserName = userName;
+    }
+
+    public String getUserEmail() {
+        return UserEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        UserEmail = userEmail;
     }
 
     public String getUserTelephone() {
@@ -72,11 +90,11 @@ public class UserModel {
         UserPassword = userPassword;
     }
 
-    public String getUserConfirmPassword() {
-        return UserConfirmPassword;
+    public String getUserRole() {
+        return UserRole;
     }
 
-    public void setUserConfirmPassword(String userConfirmPassword) {
-        UserConfirmPassword = userConfirmPassword;
+    public void setUserRole(String userRole) {
+        UserRole = userRole;
     }
 }
